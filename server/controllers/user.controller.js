@@ -43,7 +43,6 @@ export const signin = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-  
     const user = await User.findOne({ email }).select("+password");
 
     if (!user) {
@@ -81,6 +80,15 @@ export const signout = async (req, res, next) => {
       .status(200)
       .clearCookie("token")
       .json({ message: "User logged out successfully" });
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
+};
+
+// checking auth
+export const auth = async (req, res, next) => {
+  try {
+    return res.status(200).json({success : true , message : "user found"});
   } catch (error) {
     return next(new ErrorHandler(error.message, 500));
   }

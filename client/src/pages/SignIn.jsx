@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input, Button } from "../components/components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../utils/axiosInstance";
+import Cookies from "js-cookie";
 
 export const SignIn = () => {
+  const navigate = useNavigate();
   const [error, setError] = useState("");
   const [input, setInput] = useState({
     email: "",
@@ -20,7 +22,9 @@ export const SignIn = () => {
       const res = await axiosInstance.post("/api/user/signin", input, {
         withCredentials: true,
       });
-      console.log(res);
+      if (res.data.message == "User logged in successfully") {
+        navigate("/");
+      }
     } catch (error) {
       if (error.response) {
         // If server responded with an error
@@ -34,6 +38,41 @@ export const SignIn = () => {
       }
     }
   };
+  useEffect(() => {
+    document.title = "Sign in";
+  }, []);
+  // useEffect(() => {
+  //   if(document.cookie.includes("token")){
+  //     navigate("/");
+  //   }
+  // }, []);
+
+  const checkAuth = async () => {
+    try {
+      const res = await axiosInstance.get("/api/user/auth", {withCredentials : true});
+      if(res.data.message == "user found"){
+        navigate("/");
+      }
+    } catch (error) {
+      if (error.response) {
+        // If server responded with an error
+        setError(error.response.data.message || "Something went wrong");
+      } else if (error.request) {
+        // If request was made but no response received
+        setError("No response from server. Please try again.");
+      } else {
+        // Other errors
+        setError("An unexpected error occurred.");
+      }
+     
+    }
+  }
+
+  useEffect(() => {
+    if(Cookies.get("token")){
+      checkAuth();
+    }
+  }, []);
 
   return (
     <>

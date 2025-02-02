@@ -6,6 +6,7 @@ import { server, app } from "./config/socket.js";
 import { connectDB } from "./config/database.js";
 import {errorHandler} from "./middlewares/errorHandler.js"
 import userRouter from "./routes/user.route.js";
+import editorRouter from "./routes/editor.route.js";
 
 // loadind .env
 dotenv.config();
@@ -18,6 +19,7 @@ app.use(cookieParser());
 
 // api routes
 app.use("/api/user/", userRouter);
+app.use("/api/editor/", editorRouter);
 
 // error handler middleware
 app.use(errorHandler);

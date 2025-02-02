@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import { Input, Button } from "../components/components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../utils/axiosInstance";
+import Cookies from "js-cookie";
 
 export const SignUp = () => {
+  const navigate = useNavigate();
   const [input, setInput] = useState({
     name: "",
     email: "",
@@ -24,7 +26,10 @@ export const SignUp = () => {
       const res = await axiosInstance.post("/api/user/signup", input, {
         withCredentials: true,
       });
-      console.log(res.data); // Handle successful response
+
+      if (res.data.message == "User created successfully") {
+        navigate("/");
+      }
     } catch (error) {
       if (error.response) {
         // If server responded with an error
@@ -38,6 +43,33 @@ export const SignUp = () => {
       }
     }
   };
+
+  const checkAuth = async () => {
+    try {
+      const res = await axiosInstance.get("/api/user/auth", {withCredentials : true});
+      if(res.data.message == "user found"){
+        navigate("/");
+      }
+    } catch (error) {
+      if (error.response) {
+        // If server responded with an error
+        setError(error.response.data.message || "Something went wrong");
+      } else if (error.request) {
+        // If request was made but no response received
+        setError("No response from server. Please try again.");
+      } else {
+        // Other errors
+        setError("An unexpected error occurred.");
+      }
+     
+    }
+  }
+
+  useEffect(() => {
+    if(Cookies.get("token")){
+      checkAuth();
+    }
+  }, []);
 
   return (
     <div className="w-full h-screen bg-gray-100 grid lg:grid-cols-2 grid-cols-1">

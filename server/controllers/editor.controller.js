@@ -5,9 +5,9 @@ import { Editor } from "../models/editor.model.js";
 export const create = async (req, res, next) => {
   try {
     const { title } = req.body;
-    const editor = new Editor({ title });
+    const editor = new Editor({ title, userId: [req.id]});
     await editor.save();
-    return res.status(200).json({ message: "document created" });
+    return res.status(200).json({docId : editor._id});
   } catch (error) {
     return next(new ErrorHandler(error.message, 500));
   }
