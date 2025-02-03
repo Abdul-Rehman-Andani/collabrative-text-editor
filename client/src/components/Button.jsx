@@ -7,7 +7,7 @@ const Button = ({ label, full, children }) => {
         full && "w-full"
       } p-3 bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-lg cursor-pointer`}
     >
-      <span className="flex items-center gap-2">
+      <span className="flex items-center justify-center gap-2">
         {label}
         {children}
       </span>

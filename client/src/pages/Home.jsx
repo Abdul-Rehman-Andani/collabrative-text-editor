@@ -3,11 +3,11 @@ import {
   Container,
   Navbar,
   BlankDocument,
-  Model,
   Documents,
   AddDocument,
+  HomeModel,
 } from "../components/components";
-import useModelStore from "../hooks/useModelStore";
+import useHomeModelStore from "../hooks/useHomeModelStore";
 import useAuthStore from "../hooks/useAuthStore";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
@@ -15,8 +15,8 @@ import { useNavigate } from "react-router-dom";
 const Home = () => {
   const navigate = useNavigate();
   const [error, setError] = useState("");
-  const { isModel } = useModelStore();
-  const {revomeInvite} = useAuthStore();
+  const { isHomeModel } = useHomeModelStore();
+  const { revomeInvite } = useAuthStore();
 
   const checkAuth = async () => {
     try {
@@ -51,11 +51,7 @@ const Home = () => {
 
   return (
     <>
-      {isModel && (
-        <Model>
-          <AddDocument />
-        </Model>
-      )}
+      {isHomeModel && <HomeModel />}
 
       <div className="bg-gray-100">
         <Navbar />

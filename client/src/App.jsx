@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Home, SignIn, SignUp, Document, Error, SignOut } from "./pages/page";
+import { Home, SignIn, SignUp, Document, Error, SignOut , Verify} from "./pages/page";
 import "./App.css";
 
 export const App = () => {
@@ -12,6 +12,7 @@ export const App = () => {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signout" element={<SignOut />} />
           <Route path="/document/:id" element={<Document />} />
+          <Route path="/verify/:email" element={<Verify />} />
           <Route path="*" element={<Error />} />
         </Routes>
       </BrowserRouter>

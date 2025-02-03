@@ -4,5 +4,6 @@ import SignUp from "./SignUp";
 import Document from "./Document";
 import Error from "./Error";
 import SignOut from "./SignOut";
+import Verify from "./Verify";
 
-export {Home, SignIn, SignUp, Document, Error, SignOut};
+export {Home, SignIn, SignUp, Document, Error, SignOut, Verify};

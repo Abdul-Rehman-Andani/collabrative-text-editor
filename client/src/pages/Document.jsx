@@ -3,10 +3,14 @@ import Editor from "../components/Editor";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../hooks/useAuthStore";
+import useDocumentModelStore from "../hooks/useDocumentModelStore";
+import useHomeModelStore from "../hooks/useHomeModelStore";
+import { DocumentModel } from "../components/components";
 
 const Document = () => {
-
-  const {showInvite} = useAuthStore();
+  const { isDocumentModel } = useDocumentModelStore();
+  const { closeHomeModel } = useHomeModelStore();
+  const { showInvite } = useAuthStore();
   const navigate = useNavigate();
   const [error, setError] = useState("");
 
@@ -33,17 +37,17 @@ const Document = () => {
   };
 
   useEffect(() => {
-
     if (!Cookies.get("token")) {
       navigate("/signin");
     } else {
       checkAuth();
     }
+    closeHomeModel();
     showInvite();
-
   }, []);
   return (
     <>
+      {isDocumentModel && <DocumentModel />}
       <Editor />
     </>
   );
