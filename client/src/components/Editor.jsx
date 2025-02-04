@@ -13,7 +13,7 @@ const Editor = () => {
     socket.emit("open-document", id);
 
     socket.on("load-document", (docContent) => {
-      setValue(docContent || ""); // Ensure content is always defined
+      setValue(docContent || ""); 
     });
 
     socket.on("edited-document", (docContent) => {

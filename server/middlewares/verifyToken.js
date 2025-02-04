@@ -1,16 +1,27 @@
+import {ErrorHandler} from "../utils/error.js";
 import jwt from "jsonwebtoken";
-import { ErrorHandler } from "../utils/error.js";
-import cookieParser from "cookie-parser"; // Import cookie-parser
 
-// Use cookie-parser middleware before socket.io server
 export const authenticate = (socket, next) => {
-    const token = socket.handshake.headers.cookie?.split('; ').find(row => row.startsWith('token=')).split('=')[1];
-
-    if (!token) {
-        return next(new ErrorHandler("Authentication error: Token required", 401));
-    }
-
     try {
+        const cookieHeader = socket.handshake.headers.cookie;
+        
+        if (!cookieHeader) {
+            return next(new ErrorHandler("Authentication error: No cookies found", 401));
+        }
+
+        // Find token cookie safely
+        const tokenCookie = cookieHeader.split('; ').find(row => row.startsWith('token='));
+
+        if (!tokenCookie) {
+            return next(new ErrorHandler("Authentication error: Token not found", 401));
+        }
+
+        const token = tokenCookie.split('=')[1];
+
+        if (!token) {
+            return next(new ErrorHandler("Authentication error: Empty token", 401));
+        }
+
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         socket.user = decoded; // Attach user data to socket
         next();

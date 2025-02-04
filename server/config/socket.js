@@ -8,14 +8,13 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
-
 const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173", // Allow your React app's origin
+    origin: "http://localhost:5173",
     methods: ["GET", "POST"],
-    credentials: true, // Allow cookies (if using JWT in cookies)
+    credentials: true,
   },
 });
 
@@ -26,8 +25,9 @@ io.on("connection", (socket) => {
   console.log("User connected:", socket.user);
 
   socket.on("open-document", async (docId) => {
+    socket.join(docId); // Join document room
     const document = await Editor.findOne({ _id: docId });
-    socket.emit("load-document", document.content);
+    socket.emit("load-document", document?.content || "");
   });
 
   socket.on("edit-document", async ({ docId, content }) => {
@@ -37,7 +37,7 @@ io.on("connection", (socket) => {
       { new: true }
     );
 
-    io.emit("edited-document", document.content);
+    socket.to(docId).emit("edited-document", document.content);
   });
 
   socket.on("disconnect", () => {
@@ -45,4 +45,5 @@ io.on("connection", (socket) => {
   });
 });
 
-export { app, server, io };
+
+export { app, server };
