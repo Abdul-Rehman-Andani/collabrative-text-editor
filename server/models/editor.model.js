@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 const editorSchema = new mongoose.Schema({
   title: { type: String, trim: true, required: true },
   content: { type: String, default: "" },
-  userId: [{ type: mongoose.Types.ObjectId, ref: "User", required: true }],
+  createdBy: { type: mongoose.Types.ObjectId, ref: "User" },
+  userIds: [{ type: mongoose.Types.ObjectId, ref: "User" , default : [""]}],
   date: { type: String, default: Date.now() },
 });
 

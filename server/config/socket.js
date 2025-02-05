@@ -22,7 +22,7 @@ const io = new Server(server, {
 io.use(authenticate);
 
 io.on("connection", (socket) => {
-  console.log("User connected:", socket.user);
+  // console.log("User connected:", socket.user);
 
   socket.on("open-document", async (docId) => {
     socket.join(docId); // Join document room
@@ -31,13 +31,14 @@ io.on("connection", (socket) => {
   });
 
   socket.on("edit-document", async ({ docId, content }) => {
-    const document = await Editor.findOneAndUpdate(
-      { _id: docId },
-      { content },
-      { new: true }
-    );
+    const document = await Editor.findOne({ _id: docId });
+    document.content = content;
+    if(!document.userIds.includes(socket.user.id)){
+      document.userIds.push(socket.user.id);
+    }
+    await document.save();
 
-    socket.to(docId).emit("edited-document", document.content);
+    io.emit("edited-document", document.content);
   });
 
   socket.on("disconnect", () => {

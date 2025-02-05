@@ -2,10 +2,12 @@ import { Button, Container } from "./components";
 import { Link } from "react-router-dom";
 import useAuthStore from "../hooks/useAuthStore";
 import useDocumentModelStore from "../hooks/useDocumentModelStore";
+import useDownloadStore from "../hooks/useDownloadStore";
 import { MdGroupAdd } from "react-icons/md";
 
 const Navbar = () => {
   const { openDocumentModel } = useDocumentModelStore();
+  const {downloadDoc} = useDownloadStore()
   const { invite } = useAuthStore();
   return (
     <>
@@ -18,6 +20,13 @@ const Navbar = () => {
             <div className="btns flex gap-3">
               <span>
                 {invite && (
+                  <span onClick={() => downloadDoc()}>
+                    <Button label={"Download"} />
+                  </span>
+                )}
+              </span>
+              <span>
+                {invite && (
                   <span onClick={() => openDocumentModel()}>
                     <Button label={"Invite"}>
                       <MdGroupAdd />
@@ -26,7 +35,7 @@ const Navbar = () => {
                 )}
               </span>
               <Link to={"/signout"}>
-                <Button label={`Sign out`} />
+                <Button label={`Signout`} />
               </Link>
             </div>
           </div>

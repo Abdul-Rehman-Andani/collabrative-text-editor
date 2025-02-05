@@ -9,7 +9,7 @@ import AddDocument from "./AddDocument";
 import SendMail from "./SendMail";
 import HomeModel from "./HomeModel";
 import DocumentModel from "./DocumentModel";
-
+import MyDocuments from "./MyDocuments";
 export {
   Button,
   Input,
@@ -22,4 +22,5 @@ export {
   SendMail,
   HomeModel,
   DocumentModel,
+  MyDocuments
 };

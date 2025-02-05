@@ -6,6 +6,7 @@ import {
   Documents,
   AddDocument,
   HomeModel,
+  MyDocuments
 } from "../components/components";
 import useHomeModelStore from "../hooks/useHomeModelStore";
 import useAuthStore from "../hooks/useAuthStore";
@@ -66,9 +67,10 @@ const Home = () => {
         <section className="bg-white">
           <Container>
             <h1 className="py-3">Your Documents</h1>
-            <Documents />
+            <MyDocuments />
           </Container>
         </section>
+    
       </div>
     </>
   );

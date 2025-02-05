@@ -6,6 +6,7 @@ import useAuthStore from "../hooks/useAuthStore";
 import useDocumentModelStore from "../hooks/useDocumentModelStore";
 import useHomeModelStore from "../hooks/useHomeModelStore";
 import useMailStore from "../hooks/useMailStore";
+import useDownloadStore from "../hooks/useDownloadStore";
 import { DocumentModel } from "../components/components";
 import { useParams } from "react-router-dom";
 
@@ -15,6 +16,7 @@ const Document = () => {
   const { closeHomeModel } = useHomeModelStore();
   const { updateDocId } = useMailStore();
   const { showInvite } = useAuthStore();
+  const {updateId} = useDownloadStore();
   const navigate = useNavigate();
   const [error, setError] = useState("");
 
@@ -49,6 +51,7 @@ const Document = () => {
     closeHomeModel();
     showInvite();
     updateDocId(id);
+    updateId(id);
   }, [id]);
   return (
     <>
